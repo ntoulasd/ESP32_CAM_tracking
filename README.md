@@ -2,3 +2,5 @@
 ESP32 Camera object tracking
 
 Color tracking with pan tilt camera movement
+
+Code for arduino and pc (python)
