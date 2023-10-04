@@ -5,7 +5,7 @@ import time
 
 # Initialize tracking color and threshold
 track_color = None
-color_threshold = 30
+color_threshold = 20
 
 # Pan-Tilt Servo serial port settings
 serial_port = 'COM1'
@@ -38,16 +38,17 @@ def select_color(event, x, y, flags, param):
         track_color = (r, g, b)
 
 # Main loop
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("FPV Drone Vs Rallycross Cars.mp4")
 cv2.namedWindow('Particle Tracking')
 cv2.setMouseCallback('Particle Tracking', select_color)
 
 while True:
+    time.sleep(0.05)
     # Capture frame from USB camera
     ret, frame = cap.read()
     if not ret:
         print('Failed to capture frame from USB camera')
-        continue
+        break
 
     # Find the particle by color
     target_x, target_y = -1, -1
@@ -102,15 +103,16 @@ while True:
         size = 40  # Size of the square
         top_left = (target_x - size // 2, target_y - size // 2)
         bottom_right = (target_x + size // 2, target_y + size // 2)
-        cv2.rectangle(frame, top_left, bottom_right, (0, 255, 0), 2)
+        #cv2.rectangle(frame, top_left, bottom_right, (0, 255, 0), 2)
+        cv2.rectangle(frame, top_left, bottom_right, (0, 0, 255), 2)
 
     # Print pan, tilt, and color at the bottom of the image
     pan_text = f'Pan: {int(pan_angle)}'
     tilt_text = f'Tilt: {int(tilt_angle)}'
     color_text = f'Color: {track_color}'
-    cv2.putText(frame, pan_text, (10, frame.shape[0] - 60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
-    cv2.putText(frame, tilt_text, (10, frame.shape[0] - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
-    cv2.putText(frame, color_text, (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+    cv2.putText(frame, pan_text, (10, frame.shape[0] - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
+    cv2.putText(frame, tilt_text, (10, frame.shape[0] - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
+    cv2.putText(frame, color_text, (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
 
     # Display the frame with particle tracking
     cv2.imshow('Particle Tracking', frame)
