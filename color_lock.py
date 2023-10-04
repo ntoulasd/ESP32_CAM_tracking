@@ -38,7 +38,7 @@ def select_color(event, x, y, flags, param):
         track_color = (r, g, b)
 
 # Main loop
-cap = cv2.VideoCapture("FPV Drone Vs Rallycross Cars.mp4")
+cap = cv2.VideoCapture(0)
 cv2.namedWindow('Particle Tracking')
 cv2.setMouseCallback('Particle Tracking', select_color)
 
@@ -105,6 +105,12 @@ while True:
         bottom_right = (target_x + size // 2, target_y + size // 2)
         #cv2.rectangle(frame, top_left, bottom_right, (0, 255, 0), 2)
         cv2.rectangle(frame, top_left, bottom_right, (0, 0, 255), 2)
+        # Define the starting and ending points of the line
+        start_point = (target_x, target_y)
+        end_point = (target_x + int(pan_angle) - 90, target_y + int(tilt_angle) - 90)
+        # Draw the line on the image
+        cv2.line(frame, start_point, end_point, (0, 255, 0), 2)
+
 
     # Print pan, tilt, and color at the bottom of the image
     pan_text = f'Pan: {int(pan_angle)}'
